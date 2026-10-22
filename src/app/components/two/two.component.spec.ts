@@ -8,8 +8,8 @@ describe('TwoComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-    imports: [TwoComponent]
-})
+      imports: [TwoComponent]
+    })
     .compileComponents();
 
     fixture = TestBed.createComponent(TwoComponent);

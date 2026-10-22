@@ -8,8 +8,8 @@ describe('PereComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-    imports: [PereComponent]
-})
+      imports: [PereComponent]
+    })
     .compileComponents();
 
     fixture = TestBed.createComponent(PereComponent);

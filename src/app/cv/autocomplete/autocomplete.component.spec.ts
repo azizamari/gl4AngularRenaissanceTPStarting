@@ -8,8 +8,8 @@ describe('AutocompleteComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-    imports: [AutocompleteComponent]
-});
+      imports: [AutocompleteComponent]
+    });
     fixture = TestBed.createComponent(AutocompleteComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

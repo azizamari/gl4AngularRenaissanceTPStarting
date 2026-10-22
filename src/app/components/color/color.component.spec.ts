@@ -8,8 +8,8 @@ describe('ColorComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-    imports: [ColorComponent]
-})
+      imports: [ColorComponent]
+    })
     .compileComponents();
 
     fixture = TestBed.createComponent(ColorComponent);
