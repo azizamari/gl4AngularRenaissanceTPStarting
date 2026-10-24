@@ -1,0 +1,9 @@
+<h2>TTC Calculator</h2>
+
+<label>Prix HT <input type="number" [(ngModel)]="price" /></label>
+<label>Quantité <input type="number" [(ngModel)]="quantity" /></label>
+<label>TVA <input type="number" [(ngModel)]="tva" /></label>
+
+<p>Prix unitaire TTC : {{ unitPriceTtc() | currency }}</p>
+<p>Prix total TTC : {{ totalTtc() | currency }}</p>
+<p>Discount : {{ discount() | currency }}</p>
