@@ -1,8 +1,6 @@
-import { Injectable, inject } from '@angular/core';
-import { Todo } from '../model/todo';
+import { Injectable, computed, inject, signal } from '@angular/core';   
+import { Todo, TodoStatus } from '../model/todo';                        
 import { LoggerService } from '../../services/logger.service';
-
-let n = 1;
 
 @Injectable({
   providedIn: 'root',
@@ -10,46 +8,60 @@ let n = 1;
 export class TodoService {
   private loggerService = inject(LoggerService);
 
-  private todos: Todo[] = [];
+
+  #nextId = 1;
+  #todos = signal<Todo[]>([]);
+
+ 
+  readonly todos = this.#todos.asReadonly();
+
+  readonly waitingTodos = this.#todosByStatus('pending');
+  readonly inProgressTodos = this.#todosByStatus('in-progress');
+  readonly doneTodos = this.#todosByStatus('completed');
+
+ 
 
   /**
-   * elle retourne la liste des todos
+   * Ajoute un todo, toujours avec le statut 'pending'
    *
-   * @returns Todo[]
+   * @param name: string
+   * @param content: string
    */
-  getTodos(): Todo[] {
-    return this.todos;
+  addTodo(name: string, content: string): void {
+    const todo: Todo = { id: this.#nextId++, name, content, status: 'pending' };
+    this.#todos.update((todos) => [...todos, todo]);
   }
 
   /**
-   *Elle permet d'ajouter un todo
+   * Change le statut d'un todo, ce qui le fait passer dans une autre liste
    *
-   * @param todo: Todo
-   *
+   * @param id: number
+   * @param status: TodoStatus
    */
-  addTodo(todo: Todo): void {
-    this.todos.push(todo);
+  updateStatus(id: number, status: TodoStatus): void {
+    this.#todos.update((todos) =>
+      todos.map((todo) => (todo.id === id ? { ...todo, status } : todo))
+    );
   }
 
   /**
-   * Delete le todo s'il existe
+   * Supprime un todo par son id
    *
-   * @param todo: Todo
-   * @returns boolean
+   * @param id: number
    */
-  deleteTodo(todo: Todo): boolean {
-    const index = this.todos.indexOf(todo);
-    if (index > -1) {
-      this.todos.splice(index, 1);
-      return true;
-    }
-    return false;
+  deleteTodo(id: number): void {
+    this.#todos.update((todos) => todos.filter((todo) => todo.id !== id));
   }
 
   /**
    * Logger la liste des todos
    */
   logTodos() {
-    this.loggerService.logger(this.todos);
+    this.loggerService.logger(this.#todos()); 
+  }
+
+
+  #todosByStatus(status: TodoStatus) {
+    return computed(() => this.#todos().filter((todo) => todo.status === status));
   }
 }
