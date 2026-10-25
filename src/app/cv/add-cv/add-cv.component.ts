@@ -11,7 +11,7 @@ import { JsonPipe } from "@angular/common";
     selector: "app-add-cv",
     templateUrl: "./add-cv.component.html",
     styleUrls: ["./add-cv.component.css"],
-    changeDetection: ChangeDetectionStrategy.Eager,
+    changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [FormsModule, ReactiveFormsModule, JsonPipe]
 })
 export class AddCvComponent {

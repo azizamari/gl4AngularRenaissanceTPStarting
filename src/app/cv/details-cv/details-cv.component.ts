@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy, inject } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, inject, signal } from '@angular/core';
 import { Cv } from '../model/cv';
 import { CvService } from '../services/cv.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -11,7 +11,7 @@ import { DefaultImagePipe } from '../pipes/default-image.pipe';
     selector: 'app-details-cv',
     templateUrl: './details-cv.component.html',
     styleUrls: ['./details-cv.component.css'],
-    changeDetection: ChangeDetectionStrategy.Eager,
+    changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [DefaultImagePipe]
 })
 export class DetailsCvComponent implements OnInit {
@@ -21,13 +21,14 @@ export class DetailsCvComponent implements OnInit {
   private toastr = inject(ToastrService);
   authService = inject(AuthService);
 
-  cv: Cv | null = null;
+  /** Signal local pour le CV chargé depuis l'API */
+  cv = signal<Cv | null>(null);
 
   ngOnInit() {
     const id = this.activatedRoute.snapshot.params['id'];
     this.cvService.getCvById(+id).subscribe({
         next: (cv) => {
-          this.cv = cv;
+          this.cv.set(cv);
         },
         error: (e) => {
           this.router.navigate([APP_ROUTES.cv]);
