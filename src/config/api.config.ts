@@ -1,5 +1,8 @@
+const BASE_API = "https://apilb.tridevs.net/api/";
+
 export const API = {
-  cv: "https://apilb.tridevs.net/api/personnes/",
-  login: "https://apilb.tridevs.net/api/Users/login",
+  base: BASE_API,
+  cv: `${BASE_API}personnes/`,
+  login: `${BASE_API}Users/login`,
   products: "https://dummyjson.com/products",
 };

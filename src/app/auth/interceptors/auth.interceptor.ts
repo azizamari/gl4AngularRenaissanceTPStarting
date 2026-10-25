@@ -1,30 +1,23 @@
-import { Injectable, inject } from '@angular/core';
-import { HttpRequest, HttpHandler, HttpEvent, HttpInterceptor, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { inject } from '@angular/core';
+import { HttpErrorResponse, HttpInterceptorFn, HttpStatusCode } from '@angular/common/http';
+import { catchError, throwError } from 'rxjs';
 import { AuthService } from '../services/auth.service';
-import { HttpHeaders } from '@angular/common/http';
+import { API } from '../../../config/api.config';
 
-@Injectable()
-export class AuthInterceptor implements HttpInterceptor {
-  private authService = inject(AuthService);
-
-  intercept(
-    request: HttpRequest<unknown>,
-    next: HttpHandler
-  ): Observable<HttpEvent<unknown>> {
-    if (this.authService.isAuthenticated()) {
-      const token = localStorage.getItem('token') ?? ''
-      const cloneReq = request.clone({ setHeaders: {
-        'Authorization': token
-      } });
-      return next.handle(cloneReq);
-    }
-    return next.handle(request);
+export const authInterceptor: HttpInterceptorFn = (request, next) => {
+  const authService = inject(AuthService);
+  const token = authService.token();
+  // Never send our token to third party APIs
+  if (!token || !request.url.startsWith(API.base)) {
+    return next(request);
   }
-}
-
-export const AuthInterceptorProvider = {
-  provide: HTTP_INTERCEPTORS,
-  useClass: AuthInterceptor,
-  multi: true,
+  return next(request.clone({ setHeaders: { Authorization: token } })).pipe(
+    catchError((error: HttpErrorResponse) => {
+      // The server no longer accepts the token (expired or revoked)
+      if (error.status === HttpStatusCode.Unauthorized) {
+        authService.logout();
+      }
+      return throwError(() => error);
+    })
+  );
 };
