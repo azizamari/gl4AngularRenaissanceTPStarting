@@ -19,7 +19,9 @@ export class DetailsCvComponent implements OnInit {
   private router = inject(Router);
   private activatedRoute = inject(ActivatedRoute);
   private toastr = inject(ToastrService);
-  authService = inject(AuthService);
+  private authService = inject(AuthService);
+
+  isAuthenticated = this.authService.isAuthenticated;
 
   /** Signal local pour le CV chargé depuis l'API */
   cv = signal<Cv | null>(null);
