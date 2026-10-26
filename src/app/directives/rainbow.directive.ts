@@ -2,11 +2,6 @@ import { Directive, signal } from '@angular/core';
 
 @Directive({
   selector: 'input[appRainbow]',
-  host: {
-    '[style.color]': 'color()',
-    '[style.border-color]': 'borderColor()',
-    '(keyup)': 'onKeyup()',
-  },
 })
 export class RainbowDirective {
   color = signal('black');
