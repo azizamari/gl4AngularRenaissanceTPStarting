@@ -25,7 +25,8 @@
         } @else {
         <a class="nav-link" [routerLink]="['login']" routerLinkActive="active text-primary">Login</a>
         }
-        <a class="nav-link" routerLink="/currency">Currency</a>
+        <a class="nav-link" [routerLink]="['currency']" routerLinkActive="active text-primary">Currency</a>
+        <a class="nav-link" [routerLink]="['products-filter']" routerLinkActive="active text-primary">Products Filter</a>
       </div>
     </div>
   </div>

@@ -1,4 +1,4 @@
-import { Component, computed, signal } from '@angular/core';
+import { Component, computed, linkedSignal, signal } from '@angular/core';
 import { countries } from '../data/countries';
 
 @Component({
@@ -13,13 +13,29 @@ export class CountryCurrencySelectorComponent {
 
   selectedCountryName = signal(countries[0].name);
 
-  currencies = computed(
-    () =>
-      this.countries().find((c) => c.name === this.selectedCountryName())
-        ?.acceptedCurrencies ?? [],
+  selectedCountry = computed(
+    () => this.countries().find((c) => c.name === this.selectedCountryName())!,
   );
+
+  currencies = computed(
+    () => this.selectedCountry()?.acceptedCurrencies ?? [],
+  );
+
+  selectedCurrency = linkedSignal({
+    source: () => this.selectedCountry(),
+    computation: (country, previous: { value: string } | undefined) => {
+      if (previous && country.acceptedCurrencies.includes(previous.value)) {
+        return previous.value;
+      }
+      return country.defaultCurrency || country.acceptedCurrencies[0];
+    },
+  });
 
   onCountryChange(event: Event) {
     this.selectedCountryName.set((event.target as HTMLSelectElement).value);
+  }
+
+  onCurrencyChange(event: Event) {
+    this.selectedCurrency.set((event.target as HTMLSelectElement).value);
   }
 }

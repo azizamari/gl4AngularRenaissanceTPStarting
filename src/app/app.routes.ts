@@ -12,10 +12,12 @@ import { CvComponent } from "./cv/cv/cv.component";
 import { DetailsCvComponent } from "./cv/details-cv/details-cv.component";
 import { RhComponent } from "./optimizationPattern/rh/rh.component";
 import { CountryCurrencySelectorComponent } from './tp2/currency-selector/country-currency-selector.component';
+import { ProductsFilterComponent } from './tp2/products-filter/products-filter.component';
 export const routes: Routes = [
   { path: "login", component: LoginComponent },
   { path: "rh", component: RhComponent },
   { path: 'currency', component: CountryCurrencySelectorComponent },
+  { path: 'products-filter', component: ProductsFilterComponent },
   { path: "cv", component: CvComponent },
   { path: "cv/add", component: AddCvComponent, canActivate: [authGuard] },
   { path: "cv/:id", component: DetailsCvComponent },

@@ -1,12 +1,20 @@
-<h1>Currency Selector</h1>
-<hr />
-<select class="form-control" (change)="onCountryChange($event)">
-  @for (country of countries(); track country.name) {
-  <option [value]="country.name">{{ country.name }}</option>
-  }
-</select>
-<select class="form-control">
-  @for (currency of currencies(); track currency) {
-  <option [value]="currency">{{ currency }}</option>
-  }
-</select>
+<div class="container mt-4">
+  <h1>Currency Selector</h1>
+  <hr />
+  <div class="mb-3">
+    <label class="form-label">Country:</label>
+    <select class="form-control" [value]="selectedCountryName()" (change)="onCountryChange($event)">
+      @for (country of countries(); track country.name) {
+      <option [value]="country.name">{{ country.name }}</option>
+      }
+    </select>
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Currency:</label>
+    <select class="form-control" [value]="selectedCurrency()" (change)="onCurrencyChange($event)">
+      @for (currency of currencies(); track currency) {
+      <option [value]="currency">{{ currency }}</option>
+      }
+    </select>
+  </div>
+</div>
