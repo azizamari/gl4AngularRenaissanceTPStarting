@@ -10,6 +10,7 @@ import { authGuard } from "./auth/guards/auth.guard";
 import { AddCvComponent } from "./cv/add-cv/add-cv.component";
 import { CvComponent } from "./cv/cv/cv.component";
 import { DetailsCvComponent } from "./cv/details-cv/details-cv.component";
+import { AutocompleteComponent } from "./cv/autocomplete/autocomplete.component";
 import { RhComponent } from "./optimizationPattern/rh/rh.component";
 import { CountryCurrencySelectorComponent } from './tp2/currency-selector/country-currency-selector.component';
 import { ProductsFilterComponent } from './tp2/products-filter/products-filter.component';
@@ -20,6 +21,8 @@ export const routes: Routes = [
   { path: 'products-filter', component: ProductsFilterComponent },
   { path: "cv", component: CvComponent },
   { path: "cv/add", component: AddCvComponent, canActivate: [authGuard] },
+  // avant "cv/:id", sinon "search" serait lu comme un id
+  { path: "cv/search", component: AutocompleteComponent },
   { path: "cv/:id", component: DetailsCvComponent },
   {
     path: "",
