@@ -5,14 +5,14 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { APP_ROUTES } from '../../../config/routes.config';
 import { AuthService } from '../../auth/services/auth.service';
-import { DefaultImagePipe } from '../pipes/default-image.pipe';
+import { CvInfoComponent } from '../cv-info/cv-info.component';
 
 @Component({
     selector: 'app-details-cv',
     templateUrl: './details-cv.component.html',
     styleUrls: ['./details-cv.component.css'],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [DefaultImagePipe]
+    imports: [CvInfoComponent]
 })
 export class DetailsCvComponent implements OnInit {
   private cvService = inject(CvService);
