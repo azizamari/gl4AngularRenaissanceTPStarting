@@ -38,4 +38,12 @@ describe('CvService', () => {
     });
     req.flush([]);
   });
+
+  it('selectByName escapes LIKE wildcards so they are searched literally', () => {
+    service.selectByName('%_\\').subscribe();
+    const req = http.expectOne((r) => r.url === API.cv);
+    // % et _ sont des jokers en LIKE, \ est le caractère d'échappement : on les préfixe par \
+    expect(JSON.parse(req.request.params.get('filter')!).where.name.like).toBe('%\\%\\_\\\\%');
+    req.flush([]);
+  });
 });

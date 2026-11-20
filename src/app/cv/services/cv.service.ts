@@ -109,7 +109,9 @@ export class CvService {
    * @returns cvs Cv[]
    */
   selectByName(name: string): Observable<Cv[]> {
-    const search = JSON.stringify({ where: { name: { like: `%${name}%` } } });
+    // % et _ sont des jokers en LIKE (et \ l'échappement) : on les échappe pour chercher le texte tel quel
+    const literal = name.replace(/[\\%_]/g, "\\$&");
+    const search = JSON.stringify({ where: { name: { like: `%${literal}%` } } });
     const params = new HttpParams().set("filter", search);
     return this.http.get<Cv[]>(API.cv, { params });
   }
