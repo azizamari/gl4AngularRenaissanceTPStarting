@@ -1,3 +1,5 @@
-<form [formGroup]="form">
-  <input type="text" class="form-control" formControlName="search" />
-</form>
+<input type="text" class="form-control" placeholder="Rechercher un cv" [formControl]="search" />
+
+<app-list [cvs]="cvs$ | async"></app-list>
+
+<app-cv-info *ngIf="selectedCv$ | async as cv" [cv]="cv"></app-cv-info>
