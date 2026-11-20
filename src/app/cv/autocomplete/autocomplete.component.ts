@@ -1,8 +1,10 @@
-import { Component, inject, ChangeDetectionStrategy, signal } from "@angular/core";
+import { Component, inject, ChangeDetectionStrategy, computed, signal } from "@angular/core";
 import { rxResource, toObservable, toSignal } from "@angular/core/rxjs-interop";
 import { FormsModule } from "@angular/forms";
 import { debounceTime, distinctUntilChanged, map } from "rxjs";
 import { CvService } from "../services/cv.service";
+import { ListComponent } from "../list/list.component";
+import { CvInfoComponent } from "../cv-info/cv-info.component";
 
 /** Délai (ms) d'attente après la dernière frappe avant d'interroger l'API */
 export const SEARCH_DEBOUNCE_MS = 300;
@@ -12,7 +14,7 @@ export const SEARCH_DEBOUNCE_MS = 300;
   templateUrl: "./autocomplete.component.html",
   styleUrls: ["./autocomplete.component.css"],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [FormsModule],
+  imports: [FormsModule, ListComponent, CvInfoComponent],
 })
 export class AutocompleteComponent {
   private cvService = inject(CvService);
@@ -44,6 +46,12 @@ export class AutocompleteComponent {
     stream: ({ params }) => this.cvService.selectByName(params),
     defaultValue: [],
   });
+
+  /**
+   * Liste affichée. En cas d'erreur serveur, lire results.value() lève une exception :
+   * on affiche alors une liste vide (le message d'erreur est géré par le template).
+   */
+  cvs = computed(() => (this.results.hasValue() ? this.results.value() : []));
 
   /** Cv sélectionné (au clic sur un item de la liste), déjà en mémoire : pas d'appel HTTP */
   selectedCv = this.cvService.selectedCv;

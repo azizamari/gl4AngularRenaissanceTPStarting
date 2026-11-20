@@ -88,4 +88,51 @@ describe('AutocompleteComponent', () => {
     expect(first.cancelled).toBeTrue();
     http.expectOne((r) => r.params.get('filter') === filterFor('sel')).flush([]);
   }));
+
+  describe('template', () => {
+    const cvB = new Cv(2, 'skander', 'sellaouti', 'enfant', '', '1234', 4);
+
+    /** Répond à la requête en cours puis met à jour la vue */
+    function respond(body: Cv[]) {
+      http.expectOne((r) => r.url === API.cv).flush(body);
+      tick();
+      fixture.detectChanges();
+    }
+
+    it('drives the search from the input and lists the results', fakeAsync(() => {
+      setup();
+      const input: HTMLInputElement = fixture.nativeElement.querySelector('input');
+      input.value = 'se';
+      input.dispatchEvent(new Event('input'));
+      fixture.detectChanges();
+      settle();
+      respond([cvA, cvB]);
+      expect(fixture.nativeElement.querySelectorAll('app-item').length).toBe(2);
+    }));
+
+    it('shows the clicked cv without any new request', fakeAsync(() => {
+      setup();
+      type('se');
+      settle();
+      respond([cvA, cvB]);
+      fixture.nativeElement.querySelector('app-item div').click();
+      fixture.detectChanges();
+      expect(fixture.nativeElement.querySelector('app-cv-info h4').textContent).toContain(
+        'Cv aymen sellaouti'
+      );
+      // afterEach http.verify() prouve qu'aucune autre requête n'a été envoyée
+    }));
+
+    it('shows an error when the server fails', fakeAsync(() => {
+      setup();
+      type('se');
+      settle();
+      http
+        .expectOne((r) => r.url === API.cv)
+        .flush('boom', { status: 500, statusText: 'Server Error' });
+      tick();
+      fixture.detectChanges();
+      expect(fixture.nativeElement.querySelector('.alert-danger')).not.toBeNull();
+    }));
+  });
 });

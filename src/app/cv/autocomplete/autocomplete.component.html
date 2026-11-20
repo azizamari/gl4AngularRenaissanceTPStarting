@@ -1,1 +1,11 @@
 <input type="text" class="form-control" placeholder="Rechercher un cv" [(ngModel)]="search" />
+
+@if (results.error()) {
+  <div class="alert alert-danger">Problème avec le serveur, réessayez plus tard.</div>
+}
+
+<app-list [cvs]="cvs()" />
+
+@if (selectedCv(); as cv) {
+  <app-cv-info [cv]="cv" />
+}
