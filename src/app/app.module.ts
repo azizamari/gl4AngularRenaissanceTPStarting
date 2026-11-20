@@ -45,6 +45,7 @@ import { ItemComponent } from "./cv/item/item.component";
 import { DefaultImagePipe } from "./cv/pipes/default-image.pipe";
 import { EmbaucheComponent } from "./cv/embauche/embauche.component";
 import { CvCardComponent } from "./cv/cv-card/cv-card.component";
+import { CvInfoComponent } from "./cv/cv-info/cv-info.component";
 import { RhComponent } from "./optimizationPattern/rh/rh.component";
 import { UserListComponent } from "./optimizationPattern/user-list/user-list.component";
 import { ProductsComponent } from "./products/products.component";
@@ -67,6 +68,7 @@ import { RainbowDirective } from './directives/rainbow.directive';
     ListComponent,
     ItemComponent,
     DetailsCvComponent,
+    CvInfoComponent,
     CvCardComponent,
     CardProfilComponent,
     EmbaucheComponent,
