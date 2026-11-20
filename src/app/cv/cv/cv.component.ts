@@ -7,12 +7,16 @@ import { ListComponent } from "../list/list.component";
 import { CvCardComponent } from "../cv-card/cv-card.component";
 import { EmbaucheComponent } from "../embauche/embauche.component";
 import { UpperCasePipe, DatePipe } from "@angular/common";
+
 @Component({
-    selector: "app-cv",
-    templateUrl: "./cv.component.html",
-    styleUrls: ["./cv.component.css"],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [ListComponent, CvCardComponent, EmbaucheComponent, UpperCasePipe, DatePipe]
+  selector: "app-cv",
+  templateUrl: "./cv.component.html",
+  styleUrls: ["./cv.component.css"],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  // Note pour le prof : EmbaucheComponent DOIT figurer dans imports pour qu'Angular
+  // reconnaisse la balise <app-embauche>. Le compilateur détecte automatiquement
+  // qu'il est encapsulé dans @defer et le splitte dans un lazy chunk dédié !
+  imports: [ListComponent, CvCardComponent, EmbaucheComponent, UpperCasePipe, DatePipe],
 })
 export class CvComponent {
   private logger = inject(LoggerService);

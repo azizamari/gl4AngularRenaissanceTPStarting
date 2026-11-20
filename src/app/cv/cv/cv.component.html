@@ -9,4 +9,25 @@
     <app-cv-card [cv]="cvService.selectedCv()"></app-cv-card>
   </div>
 </div>
-<app-embauche></app-embauche>
+
+<!-- 
+  @defer avec prefetch :
+  - prefetch on idle : télécharge le chunk JS de app-embauche en arrière-plan dès que le navigateur est au repos
+  - on viewport : affiche et monte le composant dans le DOM dès qu'il entre dans la zone visible à l'écran
+-->
+@defer (on viewport; prefetch on idle) {
+  <app-embauche></app-embauche>
+} @placeholder (minimum 500ms) {
+  <div class="alert alert-light border text-muted p-3 my-2 text-center">
+    <i class="fa fa-users"></i> Zone des embauches en attente d'affichage...
+  </div>
+} @loading (after 100ms; minimum 500ms) {
+  <div class="text-center p-3 my-2 text-primary">
+    <div class="spinner-border spinner-border-sm" role="status"></div>
+    <span class="ms-2">Chargement du module d'embauche...</span>
+  </div>
+} @error {
+  <div class="alert alert-danger my-2">
+    Erreur lors du chargement de la section d'embauche. Veuillez vérifier votre connexion.
+  </div>
+}
