@@ -12,6 +12,7 @@
           routerLinkActive="active text-primary">Home</a>
         <a class="nav-link" [routerLinkActiveOptions]="{ exact: true }" [routerLink]="['cv']"
           routerLinkActive="active text-primary">Cv</a>
+        <a class="nav-link" [routerLink]="['cv', 'list']" routerLinkActive="active text-primary">Cv List</a>
         @if (isAuthenticated()) {
         <a class="nav-link" [routerLink]="['cv/add']" routerLinkActive="active text-primary">Add Cv</a>
         }

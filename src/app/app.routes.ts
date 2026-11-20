@@ -10,6 +10,8 @@ import { authGuard } from "./auth/guards/auth.guard";
 import { AddCvComponent } from "./cv/add-cv/add-cv.component";
 import { CvComponent } from "./cv/cv/cv.component";
 import { DetailsCvComponent } from "./cv/details-cv/details-cv.component";
+import { MasterDetailsCvComponent } from "./cv/master-details-cv/master-details-cv.component";
+import { CvDetailComponent } from "./cv/master-details-cv/cv-detail/cv-detail.component";
 import { RhComponent } from "./optimizationPattern/rh/rh.component";
 import { CountryCurrencySelectorComponent } from './tp2/currency-selector/country-currency-selector.component';
 import { ProductsFilterComponent } from './tp2/products-filter/products-filter.component';
@@ -20,6 +22,11 @@ export const routes: Routes = [
   { path: 'products-filter', component: ProductsFilterComponent },
   { path: "cv", component: CvComponent },
   { path: "cv/add", component: AddCvComponent, canActivate: [authGuard] },
+  {
+    path: "cv/list",
+    component: MasterDetailsCvComponent,
+    children: [{ path: ":id", component: CvDetailComponent }],
+  },
   { path: "cv/:id", component: DetailsCvComponent },
   {
     path: "",
