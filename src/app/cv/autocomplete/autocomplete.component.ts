@@ -55,4 +55,9 @@ export class AutocompleteComponent {
 
   /** Cv sélectionné (au clic sur un item de la liste), déjà en mémoire : pas d'appel HTTP */
   selectedCv = this.cvService.selectedCv;
+
+  constructor() {
+    // La sélection est partagée avec la page /cv : on repart d'une page de recherche vide
+    this.cvService.clearSelection();
+  }
 }

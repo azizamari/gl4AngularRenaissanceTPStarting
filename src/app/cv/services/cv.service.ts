@@ -135,4 +135,11 @@ export class CvService {
   selectCv(cv: Cv) {
     this.#selectedCv.set(cv);
   }
+
+  /**
+   * Vide la sélection (aucun cv sélectionné)
+   */
+  clearSelection() {
+    this.#selectedCv.set(null);
+  }
 }

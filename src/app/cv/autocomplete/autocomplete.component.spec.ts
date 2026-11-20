@@ -4,6 +4,7 @@ import { HttpTestingController, provideHttpClientTesting } from '@angular/common
 
 import { AutocompleteComponent, SEARCH_DEBOUNCE_MS } from './autocomplete.component';
 import { Cv } from '../model/cv';
+import { CvService } from '../services/cv.service';
 import { API } from '../../../config/api.config';
 
 describe('AutocompleteComponent', () => {
@@ -121,6 +122,12 @@ describe('AutocompleteComponent', () => {
         'Cv aymen sellaouti'
       );
       // afterEach http.verify() prouve qu'aucune autre requête n'a été envoyée
+    }));
+
+    it('starts with no cv shown even if one was selected on another page', fakeAsync(() => {
+      TestBed.inject(CvService).selectCv(cvA); // ex: clic sur un cv dans la page /cv
+      setup();
+      expect(fixture.nativeElement.querySelector('app-cv-info')).toBeNull();
     }));
 
     it('shows an error when the server fails', fakeAsync(() => {
